@@ -7,8 +7,8 @@ function filer(text){
 	// var exp = "\w+\,";
 	// var leg = new RegExp(exp);
 	// console.log(leg);
-	text = text.replace(/\s/g,"");
-	var leg = new RegExp(/\w+(?=\,)/,'g');
+	// text = text.replace(/\s/g,"");
+	var leg = new RegExp(/\w+(?=[\,\t\r\n\v\f\s])/,'g');
 	text = text.match(leg);
 	if(check(text)){
 		for(var i=0;i<text.length;i++){
@@ -27,38 +27,54 @@ function filer(text){
 	}
 	return arry;
 }
+
+var warText = null;
+
 function check(text){
 	var flag = true;
 	if(text instanceof Array){
 		if(text.length>5){
-		warning($("#warning"),'is too long');
+		warText = 'is too long';
 		flag =  false;
 		}
 	}else{
 		if(!text){
-			warning($("#warning"),'is null');
+			warText = 'is null';
 			flag =  false;
 		}	
 	}
-	console.log("true");
+	if(flag) warText = null;
 	return flag;
 }
-function warning(element,text){
-	element.innerHTML = 'Warning!!!' + text;
+function warning(element){
+	if(warText!=null){
+	element.innerHTML = 'Warning!!!' + warText;
+	}else{
+		element.innerHTML = '';
+	}
 }
 function showR(){
 	var war = $("#warning");
 	var text = $("#text").value;
 	if(!check(text)){
+		
+		warning(war);
 		return false;
 	}
 	text = filer(text);
+	warning(war);
 	// check(text);
 	$("#resulte").innerHTML =text;
 }
 function showR2(){
+	var war2 = $("#warning2");
 	var textarea = $("#textarea").value;
+	if(!check(textarea)){
+		warning(war2);
+		return false;
+	}
 	textarea = filer(textarea);
+	warning(war2);
 	$("#resulte2").innerHTML =textarea;
 }
 //单行输入框
