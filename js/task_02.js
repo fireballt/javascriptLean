@@ -1,6 +1,9 @@
 // window.onload = oneLine();
 // // 
 
+
+
+
 function filer(text){
 	
 	var arry = new Array();
@@ -33,7 +36,7 @@ var warText = null;
 function check(text){
 	var flag = true;
 	if(text instanceof Array){
-		if(text.length>5){
+		if(text.length>10){
 		warText = 'is too long';
 		flag =  false;
 		}
@@ -64,7 +67,45 @@ function showR(){
 	text = filer(text);
 	warning(war);
 	// check(text);
+
+
 	$("#resulte").innerHTML =text;
+}
+
+//加入checkbox
+
+function creatCheckBox(name){
+	var lable = document.createElement("lable");
+	var t = document.createTextNode(name);
+	lable.setAttribute("for",name);
+	var checkBox = document.createElement("input");
+	checkBox.type = 'checkbox';
+	checkBox.name = 'supper';
+	checkBox.id = name;
+
+	lable.appendChild(t);
+	lable.appendChild(checkBox);
+	$("#content").appendChild(lable);
+	// $("#content").appendChild(checkBox);
+}
+function creatBoxs(textarea){
+	var wordsNumber = textarea.length;
+	var para = $("#content");
+	if(para.innerHTML){
+		var childNumber = para.childNodes.length;
+		if(childNumber!=0){
+			for(var i=0;i<childNumber;i++){
+				para.removeChild(para.childNodes[0]);
+			}
+		}
+	}
+	if(textarea instanceof Array){
+		if(textarea.length>0){
+			for(var i in textarea){
+				creatCheckBox(textarea[i]);
+			}
+		}
+	}
 }
 function showR2(){
 	var war2 = $("#warning2");
@@ -75,8 +116,12 @@ function showR2(){
 	}
 	textarea = filer(textarea);
 	warning(war2);
-	$("#resulte2").innerHTML =textarea;
+
+	creatBoxs(textarea);
+	
 }
+
+
 //单行输入框
 function oneLine(){
 	var button =  $("#button");
@@ -87,3 +132,4 @@ function someLine(){
 	var button2 = $("#button2");
 	addEvent(button2,'click',showR2);
 }
+//
