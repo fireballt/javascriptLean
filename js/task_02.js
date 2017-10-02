@@ -8,7 +8,7 @@ function filer(text){
 	// var leg = new RegExp(exp);
 	// console.log(leg);
 	// text = text.replace(/\s/g,"");
-	var leg = new RegExp(/\w+(?=[\,\t\r\n\v\f\s])/,'g');
+	var leg = new RegExp(/(\w+(?=[\,\t\r\n\v\f\s]))|\w+\b/,'g');
 	text = text.match(leg);
 	if(check(text)){
 		for(var i=0;i<text.length;i++){
