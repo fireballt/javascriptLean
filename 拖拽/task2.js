@@ -79,6 +79,8 @@ function clone(element){
 // 	});
 // 	return e;
 // }
+
+
 function addClickListener(ul){
 	ul.onmousedown = function(ev){
 　　　　var ev = ev || window.event;
@@ -86,9 +88,17 @@ function addClickListener(ul){
 　　　　if(target.nodeName.toLowerCase() == 'li'){
 // 　　　　　　　  alert(target.innerHTML);
 				var cli = clone(target);
+
 				cli.style.position = 'absolute';
 				cli.style.background = '#ccc';
+				// console.log(target.offsetTop);
 				cli.id = "cli";
+				cli.style.left = (target.offsetLeft+40) + 'px';
+
+				cli.style.top = target.offsetTop + 'px';
+				// console.log(ev.clienX);
+				// cli.left = ev.clienX;
+				// cli.top = ev.clienY;
 				box.appendChild(cli);
 　　　　}
 　　　　}
@@ -113,6 +123,40 @@ function moveLi(){
 	// }
 
 }
+function mousePosition(ev){
+  if(ev.pageX || ev.pageY){//firefox、chrome等浏览器
+   return {x:ev.pageX,y:ev.pageY};
+  }
+  return {// IE浏览器
+   x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,
+   y:ev.clientY + document.body.scrollTop - document.body.clientTop
+  };
+ }
+
+var oldx = 0;
+var oldy = 0;
+ function mouseMove(ev){
+  ev = ev || window.event;
+  var mousePos = mousePosition(ev);
+  var xChange = oldx-mousePos.x;
+  var yChange = oldy-mousePos.y;
+  console.log(xChange);
+
+  if($("#cli")){
+  	var cliz = $("#cli");
+  	var clizx = cliz.offsetLeft;
+
+  	cliz.style.left = cliz.offsetLeft + xChange + 'px';
+  	// cliz.style.top  = mousePos.y + 'px';
+  }
+	  oldx = mousePos.x;
+	  oldy = mousePos.y;
+  // document.getElementById('y').innerHTML = mousePos.y;
+ }
+
+ document.onmousemove = mouseMove;
+
+
 function mode(){
 	var ulArray1 = check(content1);
 	var ulArray2 = check(content2);
@@ -120,17 +164,9 @@ function mode(){
 	addClickListener(content1);
 	addClickListener(content2);
 	// window.setTimeout(moveLi,50);
-	// moveLi();
-	var cli = $("#cli");
-	console.log(cli);
-	if(cli){
-		cli.css({
-				    'transition-timing-function': 'linear',
-				    'transition-duration': time + 'ms',
-				    'transform': 'translate3d( ' + position + 'px,0px,0px)' //设置页面X轴移动
-		});
-		}
+	moveLi();
 }
 
 mode();
+// startDrag($("#content2"),$("#content2"));
 // content1.parentNode.appendChild(clone(content1));
